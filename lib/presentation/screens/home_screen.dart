@@ -75,19 +75,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Card(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  elevation: 8,
+                  elevation: 10,
+                  shadowColor: Colors.black45,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [AppColors.cardColorPrimary, AppColors.cardColorSecondary],
+                        colors: [
+                          AppColors.cardColorPrimary.withOpacity(0.9),
+                          AppColors.cardColorSecondary.withOpacity(0.9),
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(16.0),
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8.0,
+                          offset: Offset(4, 4),
+                        ),
+                      ],
                     ),
-                    padding: const EdgeInsets.all(25.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -103,25 +114,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.white70,
                                     fontSize: 16,
                                     letterSpacing: 1.2,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                SizedBox(height: 8),
+                                SizedBox(height: 10),
                                 Text(
                                   showBalance ? '10,000.00 TK' : '****',
                                   style: TextStyle(
                                     color: AppColors.textColorWhite,
-                                    fontSize: 32,
+                                    fontSize: 36,
                                     fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5,
                                   ),
                                 ),
                               ],
                             ),
-                            Icon(
-                              Icons.credit_card,
-                              color: AppColors.primaryColor,
-                              size: 40,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                shape: BoxShape.circle,
+                              ),
+                              padding: const EdgeInsets.all(10.0),
+                              child: Icon(
+                                Icons.credit_card,
+                                color: AppColors.primaryColor,
+                                size: 40,
+                              ),
                             ),
                           ],
+                        ),
+                        SizedBox(height: 30),
+                        Divider(
+                          color: Colors.white30,
+                          thickness: 1,
                         ),
                         SizedBox(height: 20),
                         Row(
@@ -132,14 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
-                              showBalance ?
-                              '1011012323930' : '***** 323930',
+                              showBalance ? '1011012323930' : '***** 323930',
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -147,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                ),
+                )
               ),
               SizedBox(height: 40),
               Row(
