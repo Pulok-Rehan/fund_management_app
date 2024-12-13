@@ -57,7 +57,7 @@ class FundTransferPage extends StatelessWidget {
                 SizedBox(height: 30),
                 DropdownButtonFormField<String>(
                   value: fromAccount.isNotEmpty ? fromAccount : null,
-                  items: ["Account 1", "Account 2", "Account 3"].map((account) {
+                  items: ["Pulok Rehan - 1010112345"].map((account) {
                     return DropdownMenuItem(
                       value: account,
                       child: Text(account),
@@ -78,7 +78,7 @@ class FundTransferPage extends StatelessWidget {
                 SizedBox(height: 20),
                 DropdownButtonFormField<String>(
                   value: toAccount.isNotEmpty ? toAccount : null,
-                  items: ["Account 1", "Account 2", "Account 3"].map((account) {
+                  items: ["Pulok Rehan - 1010225345","Rehan Pulok - 1010116545", "Random Guy - 1010112323"].map((account) {
                     return DropdownMenuItem(
                       value: account,
                       child: Text(account),
@@ -99,7 +99,7 @@ class FundTransferPage extends StatelessWidget {
                 SizedBox(height: 20),
                 DropdownButtonFormField<String>(
                   value: channel.isNotEmpty ? channel : null,
-                  items: ["Bank Transfer", "Mobile Banking", "Cash"].map((method) {
+                  items: ["NPSB", "EFT", "MFS Transfer"].map((method) {
                     return DropdownMenuItem(
                       value: method,
                       child: Text(method),
