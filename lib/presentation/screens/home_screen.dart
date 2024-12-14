@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fund_management_app/presentation/screens/settings_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import '../../data/balance_provider.dart';
+import '../../data/chartData.dart';
+import '../../data/static_data.dart';
 import 'amount_screen.dart';
 import '../widgets/appColor.dart';
 import '../widgets/customWidgets.dart';
@@ -19,22 +23,28 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 0) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-    }
-    if (index == 1) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    }
-    if (index == 2) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+    if (index != _selectedIndex) {
+      setState(() {
+        _selectedIndex = index;
+      });
+
+      switch (index) {
+        case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+          break;
+        case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          break;
+        case 2:
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+          break;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final balance = context.watch<BalanceProvider>().balance;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -119,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  showBalance ? '10,000.00 TK' : '****',
+                                  showBalance ? "${balance.toStringAsFixed(2)}" : '****',
                                   style: TextStyle(
                                     color: AppColors.textColorWhite,
                                     fontSize: 36,
@@ -153,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Pulok Rehan',
+                              StaticData.userName,
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 16,
@@ -161,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             Text(
-                              showBalance ? '1011012323930' : '***** 323930',
+                              showBalance ? StaticData.accountNumber : '***** ${StaticData.accountNumber.substring(9)}',
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 16,
@@ -173,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                )
+                ),
               ),
               SizedBox(height: 40),
               Row(
@@ -203,90 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(
-                      child: SfCircularChart(
-                        title: ChartTitle(
-                          text: 'Deposits',
-                          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: AppColors.cardColorPrimary),
-                        ),
-                        legend: Legend(
-                          isVisible: true,
-                          position: LegendPosition.bottom,
-                          overflowMode: LegendItemOverflowMode.wrap,
-                          textStyle: TextStyle(color: AppColors.buttonColor),
-                        ),
-                        series: <CircularSeries>[PieSeries<_ChartData, String>(
-                          dataSource: [
-                            _ChartData('December', 2),
-                            _ChartData('November', 5),
-                            _ChartData('October', 1),
-                            _ChartData('September', 3),
-                          ],
-                          xValueMapper: (_ChartData data, _) => data.category,
-                          yValueMapper: (_ChartData data, _) => data.value,
-                          dataLabelSettings: DataLabelSettings(
-                            isVisible: true,
-                            textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        )],
-                      ),
-                    ),
-                    Expanded(
-                      child: SfCircularChart(
-                        title: ChartTitle(
-                          text: 'Withdrawals',
-                          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: AppColors.cardColorPrimary),
-                        ),
-                        legend: Legend(
-                          isVisible: true,
-                          position: LegendPosition.bottom,
-                          overflowMode: LegendItemOverflowMode.wrap,
-                          textStyle: TextStyle(color: AppColors.buttonColor),
-                        ),
-                        series: <CircularSeries>[PieSeries<_ChartData, String>(
-                          dataSource: [
-                            _ChartData('December', 5),
-                            _ChartData('November', 1),
-                            _ChartData('October', 3),
-                            _ChartData('September', 1),
-                          ],
-                          xValueMapper: (_ChartData data, _) => data.category,
-                          yValueMapper: (_ChartData data, _) => data.value,
-                          dataLabelSettings: DataLabelSettings(
-                            isVisible: true,
-                            textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        )],
-                      ),
-                    ),
-                    Expanded(
-                      child: SfCircularChart(
-                        title: ChartTitle(
-                          text: 'Fund Transfers',
-                          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: AppColors.cardColorPrimary),
-                        ),
-                        legend: Legend(
-                          isVisible: true,
-                          position: LegendPosition.bottom,
-                          overflowMode: LegendItemOverflowMode.wrap,
-                          textStyle: TextStyle(color: AppColors.buttonColor),
-                        ),
-                        series: <CircularSeries>[PieSeries<_ChartData, String>(
-                          dataSource: [
-                            _ChartData('December', 1),
-                            _ChartData('November', 2),
-                            _ChartData('October', 3),
-                            _ChartData('September', 5),
-                          ],
-                          xValueMapper: (_ChartData data, _) => data.category,
-                          yValueMapper: (_ChartData data, _) => data.value,
-                          dataLabelSettings: DataLabelSettings(
-                            isVisible: true,
-                            textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                          ),
-                        )],
-                      ),
-                    ),
+                    _buildChart('Deposits', StaticData.depositsData),
+                    _buildChart('Withdrawals', StaticData.withdrawalsData),
+                    _buildChart('Fund Transfers', StaticData.transfersData),
                   ],
                 ),
               ),
@@ -317,10 +246,32 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
-class _ChartData {
-  _ChartData(this.category, this.value);
-  final String category;
-  final double value;
+  Widget _buildChart(String title, List<ChartData> data) {
+    return Expanded(
+      child: SfCircularChart(
+        title: ChartTitle(
+          text: title,
+          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 10, color: AppColors.cardColorPrimary),
+        ),
+        legend: Legend(
+          isVisible: true,
+          position: LegendPosition.bottom,
+          overflowMode: LegendItemOverflowMode.wrap,
+          textStyle: TextStyle(color: AppColors.buttonColor),
+        ),
+        series: <CircularSeries>[
+          PieSeries<ChartData, String>(
+            dataSource: data,
+            xValueMapper: (ChartData data, _) => data.category,
+            yValueMapper: (ChartData data, _) => data.value,
+            dataLabelSettings: DataLabelSettings(
+              isVisible: true,
+              textStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

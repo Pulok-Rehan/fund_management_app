@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../data/balance_provider.dart';
 import '../widgets/appColor.dart';
 import 'home_screen.dart';
 
 class OtpPage extends StatelessWidget {
+  final double amount;
+  final String transactionType;
+
+  const OtpPage({required this.amount, required this.transactionType});
+
   @override
   Widget build(BuildContext context) {
+    final balanceProvider = context.read<BalanceProvider>();
     List<TextEditingController> otpControllers =
     List.generate(6, (_) => TextEditingController());
 
@@ -94,22 +102,61 @@ class OtpPage extends StatelessWidget {
                   String otp = otpControllers.map((controller) => controller.text).join();
 
                   if (otp == staticOtp) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text("Success"),
-                        content: Text("OTP verified successfully!"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close dialog
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                            },
-                            child: Text("OK"),
+                    if(transactionType == "Transfer Funds" || transactionType == "Withdraw Funds") {
+                      if (balanceProvider.withdraw(amount)) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Success"),
+                            content: Text("Transaction Successfull!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close dialog
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                },
+                                child: Text("OK"),
+                              )
+                            ],
                           ),
-                        ],
-                      ),
-                    );
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Error"),
+                            content: Text("Insufficient Account balance!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close dialog
+                                },
+                                child: Text("OK"),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    }
+                    else{
+                      balanceProvider.deposit(amount);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text("Success"),
+                            content: Text("Transaction Successfull!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close dialog
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                },
+                                child: Text("OK"),
+                              )
+                            ],
+                          ),
+                        );
+                    }
                   } else {
                     showDialog(
                       context: context,

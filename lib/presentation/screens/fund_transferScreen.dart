@@ -143,9 +143,10 @@ class FundTransferPage extends StatelessWidget {
                         fromAccount.isNotEmpty &&
                         toAccount.isNotEmpty &&
                         channel.isNotEmpty) {
+                      double amount = double.tryParse(amountController.text) ?? 0;
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OtpPage()),
+                        MaterialPageRoute(builder: (context) => OtpPage(amount: amount, transactionType: "Transfer Funds",)),
                       );
                     }
                   },

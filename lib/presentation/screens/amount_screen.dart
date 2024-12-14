@@ -30,7 +30,7 @@ class AmountPage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: AppColors.primaryColor
+            color: AppColors.primaryColor
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -111,10 +111,11 @@ class AmountPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 40),
                   ),
                   onPressed: () {
+                    double amount = double.tryParse(amountController.text) ?? 0;
                     if (amountController.text.isNotEmpty) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => OtpPage()),
+                        MaterialPageRoute(builder: (context) => OtpPage(amount: amount, transactionType: transactionType,)),
                       );
                     }
                   },
